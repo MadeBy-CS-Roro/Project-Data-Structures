@@ -1,10 +1,10 @@
-//NOT MAKING ME IMPLEMENT ISharedRide because I am extending Ride which implements IRide, so I am already implementing IRide
+//NOTE NOT MAKING ME IMPLEMENT ISharedRide because I am extending Ride which implements IRide, so I am already implementing IRide
 public class SharedRide extends Ride{
     RiderList Riders;
 
-    public SharedRide(String PL, DateTime PT, String DL, DateTime DT, Driver D, int id){
-        super(PL, PT, DL, DT, D, id);
-        Riders = new RiderList();
+    public SharedRide(String PL, IDateTime PT, String DL, IDateTime DT, IDriver D, RiderList riders, int rideID){
+        super(PL, PT, DL, DT, D, rideID);
+        this.Riders = riders;
     }
 
     public LinkedList<IRider> getParticipants(){
