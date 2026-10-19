@@ -64,7 +64,7 @@ public class RideSharingSystem{
 
     public boolean loadRidesFromCSV(String ridesFilePath) {
         try {
-            int rideID = 0; //since the csv file doesn't have ride IDs, we will assign them sequentially starting from 0
+            int rideID = 1; //since the csv file doesn't have ride IDs, we will assign them sequentially starting from 1
             BufferedReader br = new BufferedReader(new FileReader(ridesFilePath));
             String nextLine;
             while ((nextLine = br.readLine()) != null) {
