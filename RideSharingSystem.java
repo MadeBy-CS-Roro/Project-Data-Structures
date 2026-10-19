@@ -1,6 +1,5 @@
 import java.io.*;
-//NOTE PUT IMPLEMENTS INTERFACE
-public class RideSharingSystem{
+public class RideSharingSystem implements IRideSharingSystem {
     RideList rideList;
     RiderList riderList;
     DriverList driverList;
@@ -294,6 +293,95 @@ public class RideSharingSystem{
 
         // Remove the driver from the system
         return driverList.removeById(driverId);
+    }
+
+    public boolean schedulePrivateRide(String pickupLocation, IDateTime pickupTime, IDateTime dropoffTime, String dropoffLocation, int riderId, int driverId) {
+        IRider rider = riderList.findById(riderId);
+        IDriver driver = driverList.findById(driverId);
+
+        if (rider == null || driver == null) {
+            return false; // Either the rider or the driver does not exist
+        }
+
+        // Check for scheduling conflicts
+        LinkedList<IRide> allRides = rideList.getAllAlphabetically();
+        for (Node<IRide> current = allRides.getHead(); current != null; current = current.getNext()) {
+            IRide ride = current.getData();
+            if (ride.getDriver().getId() == driverId || (ride instanceof PrivateRide && ((PrivateRide) ride).getRider().getId() == riderId) || (ride instanceof SharedRide && ((SharedRide) ride).hasRider(riderId))) {
+                if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) {
+                    return false; // Scheduling conflict found
+                }
+            }
+        }
+
+        // Create and add the private ride
+        PrivateRide newRide = new PrivateRide(pickupLocation, pickupTime, dropoffLocation, dropoffTime, driver, rideList.size(), rider);
+        return rideList.addRide(newRide);
+    }
+
+    public boolean scheduleSharedRide(String pickupLocation, IDateTime pickupTime, IDateTime dropoffTime, String dropoffLocation, int[] riderIds, int driverId) {
+        IDriver driver = driverList.findById(driverId);
+        if (driver == null) {
+            return false; // Driver does not exist
+        }
+
+        RiderList riders = new RiderList();
+        for (int riderId : riderIds) {
+            IRider rider = riderList.findById(riderId);
+            if (rider == null) {
+                return false; // One of the riders does not exist
+            }
+            riders.add(rider);
+        }
+
+        // Check for scheduling conflicts
+        LinkedList<IRide> allRides = rideList.getAllAlphabetically();
+        for (Node<IRide> current = allRides.getHead(); current != null; current = current.getNext()) {
+            IRide ride = current.getData();
+            if (ride.getDriver().getId() == driverId) {
+                if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) {
+                    return false; // Scheduling conflict found
+                }
+            }
+            for (int riderId : riderIds) {
+                if ((ride instanceof PrivateRide && ((PrivateRide) ride).getRider().getId() == riderId) || (ride instanceof SharedRide && ((SharedRide) ride).hasRider(riderId))) {
+                    if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) {
+                        return false; // Scheduling conflict found
+                    }
+                }
+            }
+        }
+
+        // Create and add the shared ride
+        SharedRide newRide = new SharedRide(pickupLocation, pickupTime, dropoffLocation, dropoffTime, driver, riders, rideList.size());
+        return rideList.addRide(newRide);
+    }
+
+    public LinkedList<IRide> searchRidesByPickupLocation(String pickupLocation) {
+        return rideList.findByPickupLocation(pickupLocation);
+    }
+
+    public LinkedList<IRide> searchRidesByRiderName(String riderName) {
+        return rideList.findByRiderName(riderName);
+    }
+
+    public LinkedList<IRider> getSharedRideParticipants(String pickupLocation) {
+        LinkedList<IRide> rides = rideList.findByPickupLocation(pickupLocation);
+        LinkedList<IRider> participants = new LinkedList<>();
+        for (Node<IRide> current = rides.getHead(); current != null; current = current.getNext()) {
+            IRide ride = current.getData();
+            if (ride instanceof SharedRide) {
+                LinkedList<IRider> rideParticipants = ((SharedRide) ride).getParticipants();
+                for (Node<IRider> riderNode = rideParticipants.getHead(); riderNode != null; riderNode = riderNode.getNext()) {
+                    participants.addLast(riderNode.getData());
+                }
+            }
+        }
+        return participants;
+    }
+
+    public LinkedList<IRide> getAllRidesAlphabetically() {
+        return rideList.getAllAlphabetically();
     }
 
     public static void main(String[] args) {
