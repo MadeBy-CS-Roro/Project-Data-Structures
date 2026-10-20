@@ -121,6 +121,8 @@ public class LinkedList<T> {
         size--;
         return target.getData();
     }
+
+    //NOTE TOSTRING METHOD HERE
 }
 
 //Done
