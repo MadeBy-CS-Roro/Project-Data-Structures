@@ -80,19 +80,19 @@ public class RideSharingSystem implements IRideSharingSystem {
                     int startPoint = 0;
                     for (int i = 0; i < 5; i++) {
                         if(i < 2){
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint, fields[2].indexOf("/", startPoint));
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else if(i == 2){
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint, fields[2].indexOf(" ", startPoint));
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf(" ", startPoint));
                             startPoint += 5; // Move past the current part and the delimiter
                             }
                         else if (i == 3){
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint, fields[2].indexOf(":", startPoint));
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf(":", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint);
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint);
                     }
                     IDateTime pickupDateTime = new DateTime(Integer.parseInt(pickUpDateTimeParts[2]), Integer.parseInt(pickUpDateTimeParts[1]), Integer.parseInt(pickUpDateTimeParts[0]), Integer.parseInt(pickUpDateTimeParts[3]), Integer.parseInt(pickUpDateTimeParts[4]));
                     String dropoffDateTimeStr = fields[3].trim();
@@ -100,19 +100,19 @@ public class RideSharingSystem implements IRideSharingSystem {
                     startPoint = 0;
                     for (int i = 0; i < 5; i++) {
                         if(i < 2){
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint, fields[3].indexOf("/", startPoint));
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else if(i == 2){
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint, fields[3].indexOf(" ", startPoint));
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf(" ", startPoint));
                             startPoint += 5; // Move past the current part and the delimiter
                             }
                         else if (i == 3){
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint, fields[3].indexOf(":", startPoint));
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf(":", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint);  
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint);  
                     }
                     IDateTime dropoffDateTime = new DateTime(Integer.parseInt(dropOffDateTimeParts[2]), Integer.parseInt(dropOffDateTimeParts[1]), Integer.parseInt(dropOffDateTimeParts[0]), Integer.parseInt(dropOffDateTimeParts[3]), Integer.parseInt(dropOffDateTimeParts[4]));
                     String dropoffLocation = fields[4].trim();
@@ -132,19 +132,19 @@ public class RideSharingSystem implements IRideSharingSystem {
                     int startPoint = 0;
                     for (int i = 0; i < 5; i++) {
                         if(i < 2){
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint, fields[2].indexOf("/", startPoint));
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else if(i == 2){
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint, fields[2].indexOf(" ", startPoint));
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf(" ", startPoint));
                             startPoint += 5; // Move past the current part and the delimiter
                             }
                         else if (i == 3){
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint, fields[2].indexOf(":", startPoint));
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf(":", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else
-                            pickUpDateTimeParts[i] = fields[2].substring(startPoint);
+                            pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint);
                     }
                     IDateTime pickupDateTime = new DateTime(Integer.parseInt(pickUpDateTimeParts[2]), Integer.parseInt(pickUpDateTimeParts[1]), Integer.parseInt(pickUpDateTimeParts[0]), Integer.parseInt(pickUpDateTimeParts[3]), Integer.parseInt(pickUpDateTimeParts[4]));
                     String dropoffDateTimeStr = fields[3].trim();
@@ -152,19 +152,19 @@ public class RideSharingSystem implements IRideSharingSystem {
                     startPoint = 0;
                     for (int i = 0; i < 5; i++) {
                         if(i < 2){
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint, fields[3].indexOf("/", startPoint));
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else if(i == 2){
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint, fields[3].indexOf(" ", startPoint));
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf(" ", startPoint));
                             startPoint += 5; // Move past the current part and the delimiter
                             }
                         else if (i == 3){
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint, fields[3].indexOf(":", startPoint));
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf(":", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
                             }
                         else
-                            dropOffDateTimeParts[i] = fields[3].substring(startPoint);
+                            dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint);
                     }
                     IDateTime dropoffDateTime = new DateTime(Integer.parseInt(dropOffDateTimeParts[2]), Integer.parseInt(dropOffDateTimeParts[1]), Integer.parseInt(dropOffDateTimeParts[0]), Integer.parseInt(dropOffDateTimeParts[3]), Integer.parseInt(dropOffDateTimeParts[4]));
                     String dropoffLocation = fields[4].trim();
