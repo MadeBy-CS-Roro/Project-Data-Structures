@@ -106,8 +106,9 @@ public class RideList implements IRideList {
      * Returns every ride that involves a rider with the given full name.
      * A private ride has one rider; a shared ride is checked against all its participants.
      * Each matching ride is added once, even if several participants share the name.
-     * Big O(n * p), where p is the number of participants in a shared ride
-     * SEND HELP WITH THIS, I TRYYING TO  MAKE IT BIG O (n) but I DONT KNOW HOW TO DO IT
+     * Assuming the number of participants per shared ride is bounded by a constant c (the vehicle capacity), 
+     * each ride is processed in O(c) = O(1) time. The loop visits n rides, so the total time is n × O(1) = O(n). 
+     * Without this assumption the cost is O(n × p), where p is the maximum number of participants in a ride.
      */
     @Override
     public LinkedList<IRide> findByRiderName(String riderFullName) {
