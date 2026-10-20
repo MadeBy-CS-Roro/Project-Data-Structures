@@ -29,7 +29,7 @@ public class Main{
 
             switch(User_input){
                 case 1:
-                    System.out.println(rideSharingSystem.getAllRiders());
+                    System.out.println(rideSharingSystem.getAllRiders()); //NOTE NEEDS TO BE ALPHABETICAL
                     break;
                 case 2:
                     System.out.println("Enter the home city to search for riders:");

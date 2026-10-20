@@ -122,7 +122,17 @@ public class LinkedList<T> {
         return target.getData();
     }
 
-    //NOTE TOSTRING METHOD HERE
+    //Returns a string representation of the list, with each element on a new line.
+    //Big O(n)
+    public String toString() {
+        String result = "";
+        Node<T> current = head;
+        while (current != null) {
+            result += current.getData().toString() + "\n";
+            current = current.getNext();
+        }
+        return result;
+    }
 }
 
 //Done
