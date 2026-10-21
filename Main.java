@@ -183,7 +183,7 @@ public class Main{
                         scanner.nextLine(); // garbage collection
                         System.out.println("Enter the driver's ID:");
                         int newPrivateDriverId = scanner.nextInt();
-                        if(rideSharingSystem.schedulePrivateRide(newPickupLocation, pickupDateTime, dropoffDateTime, newDropoffLocation, newPrivateDriverId, rideSharingSystem.getAllRidesAlphabetically().size(),newPrivateRiderId)){
+                        if(rideSharingSystem.schedulePrivateRide(newPickupLocation, pickupDateTime, dropoffDateTime, newDropoffLocation, newPrivateRiderId, newPrivateDriverId)){
                             System.out.println("Private ride scheduled successfully!");
                         } else {
                             System.out.println("Failed to schedule private ride.");}
@@ -195,15 +195,10 @@ public class Main{
                             System.out.println("Enter the ID of rider " + (i + 1) + ":");
                             newSharedRiderIds[i] = scanner.nextInt();
                         }
-                        RiderList sharedRiders = new RiderList();
-                        for(int id : newSharedRiderIds){
-                            IRider rider = rideSharingSystem.getRiderById(id);
-                            sharedRiders.addRider(rider);
-                        }
                         scanner.nextLine(); // garbage collection
                         System.out.println("Enter the driver's ID:");
                         int newSharedDriverId = scanner.nextInt();
-                        if(rideSharingSystem.scheduleSharedRide(newPickupLocation, pickupDateTime, dropoffDateTime, newDropoffLocation, newSharedDriverId, sharedRiders, rideSharingSystem.getAllRidesAlphabetically().size())){
+                        if(rideSharingSystem.scheduleSharedRide(newPickupLocation, pickupDateTime, dropoffDateTime, newDropoffLocation, newSharedRiderIds, newSharedDriverId)){
                             System.out.println("Shared ride scheduled successfully!");
                         } else {
                             System.out.println("Failed to schedule shared ride.");
