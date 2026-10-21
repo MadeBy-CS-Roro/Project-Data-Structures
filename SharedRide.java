@@ -1,20 +1,23 @@
-//NOTE NOT MAKING ME IMPLEMENT ISharedRide because I am extending Ride which implements IRide, so I am already implementing IRide
-public class SharedRide extends Ride{
-    RiderList Riders;
+public class SharedRide extends Ride<SharedRide> implements ISharedRide {
+    private RiderList Riders;
 
+    // constructor to initialize the shared ride with pickup and drop-off Date/Time values, driver, and list of riders
     public SharedRide(String PL, IDateTime PT, String DL, IDateTime DT, IDriver D, RiderList riders, int rideID){
         super(PL, PT, DL, DT, D, rideID);
         this.Riders = riders;
     }
 
+    // Returns the list of riders participating in this shared ride.
     public LinkedList<IRider> getParticipants(){
         return Riders.getAll();
     }
 
+    // Adds a rider to the shared ride.
     public boolean addParticipant(IRider rider){
         return Riders.add(rider);
     }
 
+    // Checks whether a rider with the given ID is participating in this shared ride.
     public boolean hasRider(int riderId){
         if (Riders.findById(riderId) != null) {
             return true;
@@ -22,24 +25,26 @@ public class SharedRide extends Ride{
         return false;
     }
 
+    // Removes a rider with the given ID from the shared ride.
     public boolean removeParticipantById(int riderId){
         return Riders.removeById(riderId);
     }
 
+    // Checks whether the shared ride has no riders.
     public boolean isEmpty(){
         return Riders.size() == 0;
     }
 
 	// Returns a formatted string describing the ride.
-    //NOTE CHANGE FORMAT DIDN'T LIKE IT
-    @Override
 	public String toString(){
-        return super.toString() + " SharedRide toString holder";
-    }
-
-	// Compares rides alphabetically by pickup location.
-    @Override
-    public int compareTo(IRide other){
-        return super.compareTo((Ride)other);
+        return "SharedRide{" +
+                "rideID= " + rideID +
+                ", pickupLocation= '" + pickupLocation + '\'' +
+                ", pickupTime= " + pickupTime.format() +
+                ", dropoffLocation= '" + dropoffLocation + '\'' +
+                ", dropoffTime= " + dropoffTime.format() +
+                ", driver= " + driver +
+                ", riders= " + Riders.getAll() +
+                '}';
     }
 }
