@@ -1,20 +1,23 @@
 import java.io.*;
 public class RideSharingSystem implements IRideSharingSystem {
-    RideList rideList;
-    RiderList riderList;
-    DriverList driverList;
+    private RideList rideList;
+    private RiderList riderList;
+    private DriverList driverList;
 
+    // Constructor
     public RideSharingSystem() {
         rideList = new RideList();
         riderList = new RiderList();
         driverList = new DriverList();
     }
 
+    // Loads riders from a CSV file.
+    // Returns true if loading succeeds; false otherwise.
     public boolean loadRidersFromCSV(String ridersFilePath) {
-        try {
+        try { // Open the CSV file for reading
             BufferedReader br = new BufferedReader(new FileReader(ridersFilePath));
-            String nextLine;
-            while ((nextLine = br.readLine()) != null) {
+            String nextLine; // Read each line of the CSV file
+            while ((nextLine = br.readLine()) != null) { // Split the line into fields using comma as the delimiter
                 String[] fields = nextLine.split(",");
                 int riderId = Integer.parseInt(fields[0].trim());
                 String name = fields[1].trim();
@@ -36,11 +39,13 @@ public class RideSharingSystem implements IRideSharingSystem {
         
     }
 
+    // Loads drivers from a CSV file.
+    // Returns true if loading succeeds; false otherwise.
     public boolean loadDriversFromCSV(String driversFilePath) {
-        try {
+        try { // Open the CSV file for reading
             BufferedReader br = new BufferedReader(new FileReader(driversFilePath));
-            String nextLine;
-            while ((nextLine = br.readLine()) != null) {
+            String nextLine; // Read each line of the CSV file
+            while ((nextLine = br.readLine()) != null) { // Split the line into fields using comma as the delimiter
                 String[] fields = nextLine.split(",");
                 int driverId = Integer.parseInt(fields[0].trim());
                 String name = fields[1].trim();
@@ -61,24 +66,26 @@ public class RideSharingSystem implements IRideSharingSystem {
         }
     }
 
+    // Loads rides from a CSV file. All referenced riders and the assigned driver must already exist. It must enforce conflict rules
+    // Returns true if loading succeeds; false otherwise.
     public boolean loadRidesFromCSV(String ridesFilePath) {
-        try {
-            int rideID = 1; //since the csv file doesn't have ride IDs, we will assign them sequentially starting from 1
+        try { // Open the CSV file for reading
+            int rideID = 1; // Since the csv file doesn't have ride IDs, we will assign them sequentially starting from 1
             BufferedReader br = new BufferedReader(new FileReader(ridesFilePath));
-            String nextLine;
-            while ((nextLine = br.readLine()) != null) {
+            String nextLine; // Read each line of the CSV file
+            while ((nextLine = br.readLine()) != null) { // Split the line into fields using comma as the delimiter
                 String[] fields = nextLine.split(",");
                 String rideType = fields[0].trim();
                 if (!rideType.equalsIgnoreCase("private") && !rideType.equalsIgnoreCase("shared")) {
                     System.out.println("Invalid ride type: " + rideType);
                     continue; // Skip this line and continue with the next one
                 }
-                else if (rideType.equalsIgnoreCase("private")) {
+                else if (rideType.equalsIgnoreCase("private")) { // If the ride type is private, we will create a PrivateRide object
                     String pickupLocation = fields[1].trim();
                     String pickupDateTimeStr = fields[2].trim();
-                    String[] pickUpDateTimeParts = new String[5];
-                    int startPoint = 0;
-                    for (int i = 0; i < 5; i++) {
+                    String[] pickUpDateTimeParts = new String[5]; // We will split the pickup date and time into its components (day, month, year, hour, minute)
+                    int startPoint = 0; // We will use this variable to keep track of where we are in the string as we split it into its components
+                    for (int i = 0; i < 5; i++) { // Loop through the 5 components of the date and time (day, month, year, hour, minute)
                         if(i < 2){
                             pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
@@ -96,9 +103,9 @@ public class RideSharingSystem implements IRideSharingSystem {
                     }
                     IDateTime pickupDateTime = new DateTime(Integer.parseInt(pickUpDateTimeParts[2]), Integer.parseInt(pickUpDateTimeParts[1]), Integer.parseInt(pickUpDateTimeParts[0]), Integer.parseInt(pickUpDateTimeParts[3]), Integer.parseInt(pickUpDateTimeParts[4]));
                     String dropoffDateTimeStr = fields[3].trim();
-                    String[] dropOffDateTimeParts = new String[5];
-                    startPoint = 0;
-                    for (int i = 0; i < 5; i++) {
+                    String[] dropOffDateTimeParts = new String[5]; // We will split the dropoff date and time into its components (day, month, year, hour, minute)
+                    startPoint = 0; // Reset the startPoint for the dropoff date and time
+                    for (int i = 0; i < 5; i++) { // Loop through the 5 components of the date and time (day, month, year, hour, minute)
                         if(i < 2){
                             dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
@@ -125,12 +132,12 @@ public class RideSharingSystem implements IRideSharingSystem {
                     }
                     rideID++; // Increment the ride ID for the next ride
                 }
-                else if (rideType.equalsIgnoreCase("shared")) {
+                else if (rideType.equalsIgnoreCase("shared")) { // If the ride type is shared, we will create a SharedRide object
                     String pickupLocation = fields[1].trim();
                     String pickupDateTimeStr = fields[2].trim();
-                    String[] pickUpDateTimeParts = new String[5];
-                    int startPoint = 0;
-                    for (int i = 0; i < 5; i++) {
+                    String[] pickUpDateTimeParts = new String[5]; // We will split the pickup date and time into its components (day, month, year, hour, minute)
+                    int startPoint = 0; // We will use this variable to keep track of where we are in the string as we split it into its components
+                    for (int i = 0; i < 5; i++) { // Loop through the 5 components of the date and time (day, month, year, hour, minute)
                         if(i < 2){
                             pickUpDateTimeParts[i] = pickupDateTimeStr.substring(startPoint, pickupDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
@@ -148,9 +155,9 @@ public class RideSharingSystem implements IRideSharingSystem {
                     }
                     IDateTime pickupDateTime = new DateTime(Integer.parseInt(pickUpDateTimeParts[2]), Integer.parseInt(pickUpDateTimeParts[1]), Integer.parseInt(pickUpDateTimeParts[0]), Integer.parseInt(pickUpDateTimeParts[3]), Integer.parseInt(pickUpDateTimeParts[4]));
                     String dropoffDateTimeStr = fields[3].trim();
-                    String[] dropOffDateTimeParts = new String[5];
-                    startPoint = 0;
-                    for (int i = 0; i < 5; i++) {
+                    String[] dropOffDateTimeParts = new String[5]; // We will split the dropoff date and time into its components (day, month, year, hour, minute)
+                    startPoint = 0; // Reset the startPoint for the dropoff date and time
+                    for (int i = 0; i < 5; i++) { // Loop through the 5 components of the date and time (day, month, year, hour, minute)
                         if(i < 2){
                             dropOffDateTimeParts[i] = dropoffDateTimeStr.substring(startPoint, dropoffDateTimeStr.indexOf("/", startPoint));
                             startPoint += 3; // Move past the current part and the delimiter
@@ -169,12 +176,12 @@ public class RideSharingSystem implements IRideSharingSystem {
                     IDateTime dropoffDateTime = new DateTime(Integer.parseInt(dropOffDateTimeParts[2]), Integer.parseInt(dropOffDateTimeParts[1]), Integer.parseInt(dropOffDateTimeParts[0]), Integer.parseInt(dropOffDateTimeParts[3]), Integer.parseInt(dropOffDateTimeParts[4]));
                     String dropoffLocation = fields[4].trim();
                     int driverId = Integer.parseInt(fields[5].trim());
-                    String[] riderIdsStr = fields[6].trim().split(";");
+                    String[] riderIdsStr = fields[6].trim().split(";"); // Split the rider IDs by semicolon to get an array of rider ID strings
                     RiderList riders = new RiderList();
-                    for (String riderIdStr : riderIdsStr) {
+                    for (String riderIdStr : riderIdsStr) { // For each rider ID string, we will parse it into an integer and find the corresponding rider object
                         int riderId = Integer.parseInt(riderIdStr.trim());
-                        IRider rider = riderList.findById(riderId);
-                        if (rider != null) {
+                        IRider rider = riderList.findById(riderId); // Find the rider by ID
+                        if (rider != null) { // If the rider exists, add them to the list of riders for the shared ride
                             riders.add(rider);
                         } else {
                             System.out.println("Rider with ID " + riderId + " not found. Skipping this rider for the shared ride.");
@@ -195,13 +202,15 @@ public class RideSharingSystem implements IRideSharingSystem {
         }
     }
 
+    // Adds a rider to the system. Returns true if added; false if a rider with the same ID already exists.
     public boolean addRider(IRider rider) {
-        if(riderList.findById(rider.getId()) != null) {
+        if(riderList.findById(rider.getId()) != null) { 
             return false; // Rider with this ID already exists
         }
         return riderList.add(rider);
     }
 
+    // Adds a driver to the system after enforcing uniqueness by ID and by vehicle plate number (no two drivers may share the same plate). Returns true if added; false if duplicate ID, duplicate plate, or invalid
     public boolean addDriver(IDriver driver) {
         if(driverList.findById(driver.getId()) != null) {
             return false; // Driver with this ID already exists
@@ -212,18 +221,22 @@ public class RideSharingSystem implements IRideSharingSystem {
         return driverList.add(driver);
     }
 
+    // Searches for a rider by their ID. Returns the rider if found; null otherwise.
     public IRider searchRiderById(int riderId) {
         return riderList.findById(riderId);
     }
 
+    // Searches for a rider by their email. Returns the rider if found; null otherwise.
     public IRider searchRiderByEmail(String email) {
         return riderList.findByEmail(email);
     }
 
+    // Searches for all riders whose full name exactly matches the given name. Returns a list of matching riders; empty list if none found.
     public LinkedList<IRider> searchRidersByName(String fullName) {
         return riderList.findByName(fullName);
     }
 
+    // Searches for all riders from the specified home city. Returns a list of matching riders; empty list if none found.
     public LinkedList<IRider> searchRidersByHomeCity(String homeCity) {
         return riderList.findByHomeCity(homeCity);
     }
@@ -233,6 +246,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         return riderList.getAll();
     }
 
+    // 
     public IDriver searchDriverById(int driverId) {
         return driverList.findById(driverId);
     }
@@ -389,19 +403,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         system.loadRidersFromCSV("riders_100.csv");
         system.loadDriversFromCSV("drivers_100.csv");
         system.loadRidesFromCSV("rides_40.csv");
-        RideSharingSystem system2 = new RideSharingSystem();
-        System.out.println(system2.addRider(new Rider(101, "John Doe", "1234567890", "john.doe@example.com", "New York")));
-        System.out.println(system2.addRider(new Rider(101, "John Doe", "1234567890", "john.doe@example.com", "New York")));
-        System.out.println(system2.addDriver(new Driver(201, "Jane Smith", "0987654321", "XYZ1234", VehicleType.SEDAN)));
-        System.out.println(system2.addDriver(new Driver(201, "Jane Smith", "0987654321", "XYZ1434", VehicleType.SEDAN)));
-        System.out.println(system2.addDriver(new Driver(202, "Jane Smith", "0987654321", "XYZ1234", VehicleType.SEDAN)));
-        System.out.println(system2.searchRiderById(101));
-        System.out.println(system2.searchRiderByEmail("john.doe@example.com"));
-        System.out.println(system2.searchRidersByName("John Doe"));
-        System.out.println(system2.searchRidersByHomeCity("New York"));
-        System.out.println(system2.getAllRiders());
-        System.out.println(system2.removeRider(101));
-
+        System.out.println(system.getAllRiders());
     }
 }
 
