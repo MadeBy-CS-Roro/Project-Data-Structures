@@ -2,7 +2,7 @@ import java.io.*;
 public class RideSharingSystem implements IRideSharingSystem {
     private RideList rideList;
     private RiderList riderList;
-    private DriverList driverList;
+    public DriverList driverList;
 
     // Constructor
     public RideSharingSystem() {
@@ -246,24 +246,27 @@ public class RideSharingSystem implements IRideSharingSystem {
         return riderList.getAll();
     }
 
-    // 
+    // Searches for a driver by ID
     public IDriver searchDriverById(int driverId) {
         return driverList.findById(driverId);
     }
 
+    //Searches for a driver by vehicle plate.
     public IDriver searchDriverByVehiclePlate(String vehiclePlate) {
         return driverList.findByVehiclePlate(vehiclePlate);
     }
 
+    //Searches for all drivers with the specified vehicle type.
     public LinkedList<IDriver> searchDriversByVehicleType(VehicleType vehicleType) {
         return driverList.findByVehicleType(vehicleType);
     }
 
-    //NOTE MAKE IT ALPHABETICAL
+    //NOTE MAKE IT ALPHABETICAL + ALWATS RETURN EMPTY LIST
     public LinkedList<IDriver> getAllDrivers() {
         return driverList.getAll();
     }
 
+    // Removes a rider and performs cascade deletion of associated rides
     public boolean removeRider(int riderId) {
         IRider riderToRemove = riderList.findById(riderId);
         if (riderToRemove == null) {
@@ -274,13 +277,15 @@ public class RideSharingSystem implements IRideSharingSystem {
         LinkedList<IRide> allRides = rideList.getAllAlphabetically();
         for (Node<IRide> current = allRides.getHead(); current != null; current = current.getNext()) {
             IRide ride = current.getData();
+            // If the ride was priavte
             if (ride instanceof PrivateRide && ((PrivateRide) ride).getRider().getId() == riderId) {
                 rideList.removeRideById(ride.getRideId());
             } 
+            // If the ride was shared
             else if (ride instanceof SharedRide && ((SharedRide) ride).hasRider(riderId)) {
                 SharedRide sharedRide = (SharedRide) ride;
                 sharedRide.removeParticipantById(riderToRemove.getId());
-                if (sharedRide.getParticipants().size() == 0) {
+                if (sharedRide.getParticipants().size() == 0) { // Check after deletion if there is a rider in the shared ride. If not, delete the shared ride
                     rideList.removeRideById(sharedRide.getRideId());
                 }
             }
@@ -290,6 +295,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         return riderList.removeById(riderId);
     }
 
+    // Removes a driver and performs cascade deletion of their assigned rides
     public boolean removeDriver(int driverId) {
         IDriver driverToRemove = driverList.findById(driverId);
         if (driverToRemove == null) {
@@ -300,7 +306,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         LinkedList<IRide> allRides = rideList.getAllAlphabetically();
         for (Node<IRide> current = allRides.getHead(); current != null; current = current.getNext()) {
             IRide ride = current.getData();
-            if (ride.getDriver().getId() == driverId) {
+            if (ride.getDriver().getId() == driverId) { // Search the rides that are associated to the driver who got deleted
                 rideList.removeRideById(ride.getRideId());
             }
         }
@@ -309,6 +315,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         return driverList.removeById(driverId);
     }
 
+    // Schedules a private ride for one rider with one driver
     public boolean schedulePrivateRide(String pickupLocation, IDateTime pickupTime, IDateTime dropoffTime, String dropoffLocation, int riderId, int driverId) {
         IRider rider = riderList.findById(riderId);
         IDriver driver = driverList.findById(driverId);
@@ -322,7 +329,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         for (Node<IRide> current = allRides.getHead(); current != null; current = current.getNext()) {
             IRide ride = current.getData();
             if (ride.getDriver().getId() == driverId || (ride instanceof PrivateRide && ((PrivateRide) ride).getRider().getId() == riderId) || (ride instanceof SharedRide && ((SharedRide) ride).hasRider(riderId))) {
-                if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) {
+                if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) { // Check if there is conflict in the DateTime
                     return false; // Scheduling conflict found
                 }
             }
@@ -333,6 +340,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         return rideList.addRide(newRide);
     }
 
+    // Schedules a shared ride for multiple riders with one driver
     public boolean scheduleSharedRide(String pickupLocation, IDateTime pickupTime, IDateTime dropoffTime, String dropoffLocation, int[] riderIds, int driverId) {
         IDriver driver = driverList.findById(driverId);
         if (driver == null) {
@@ -340,7 +348,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         }
 
         RiderList riders = new RiderList();
-        for (int riderId : riderIds) {
+        for (int riderId : riderIds) { // Check on each rider if they all exist
             IRider rider = riderList.findById(riderId);
             if (rider == null) {
                 return false; // One of the riders does not exist
@@ -354,13 +362,13 @@ public class RideSharingSystem implements IRideSharingSystem {
             IRide ride = current.getData();
             if (ride.getDriver().getId() == driverId) {
                 if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) {
-                    return false; // Scheduling conflict found
+                    return false; // Scheduling conflict found on the driver
                 }
             }
             for (int riderId : riderIds) {
                 if ((ride instanceof PrivateRide && ((PrivateRide) ride).getRider().getId() == riderId) || (ride instanceof SharedRide && ((SharedRide) ride).hasRider(riderId))) {
                     if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) {
-                        return false; // Scheduling conflict found
+                        return false; // Scheduling conflict found on one of the riders
                     }
                 }
             }
@@ -371,39 +379,36 @@ public class RideSharingSystem implements IRideSharingSystem {
         return rideList.addRide(newRide);
     }
 
+    // Searches for all rides whose pickup location matches the given location (may return multiple if pickup locations repeat).
     public LinkedList<IRide> searchRidesByPickupLocation(String pickupLocation) {
         return rideList.findByPickupLocation(pickupLocation);
     }
 
+    // Searches for all rides that involve a rider with the given name
     public LinkedList<IRide> searchRidesByRiderName(String riderName) {
         return rideList.findByRiderName(riderName);
     }
 
+    // Returns all riders registered on a shared ride identified by its pickup location
     public LinkedList<IRider> getSharedRideParticipants(String pickupLocation) {
         LinkedList<IRide> rides = rideList.findByPickupLocation(pickupLocation);
         LinkedList<IRider> participants = new LinkedList<>();
-        for (Node<IRide> current = rides.getHead(); current != null; current = current.getNext()) {
+        for (Node<IRide> current = rides.getHead(); current != null; current = current.getNext()) { // Check each ride
             IRide ride = current.getData();
             if (ride instanceof SharedRide) {
-                LinkedList<IRider> rideParticipants = ((SharedRide) ride).getParticipants();
+                LinkedList<IRider> rideParticipants = ((SharedRide) ride).getParticipants(); // Get all the riders in the shared ride
                 for (Node<IRider> riderNode = rideParticipants.getHead(); riderNode != null; riderNode = riderNode.getNext()) {
-                    participants.addLast(riderNode.getData());
+                    participants.addLast(riderNode.getData()); // Add them in the list to return it
                 }
             }
         }
         return participants;
     }
 
+    //Returns all rides (private and shared) alphabetically ordered by pickup location
     public LinkedList<IRide> getAllRidesAlphabetically() {
         return rideList.getAllAlphabetically();
     }
 
-    public static void main(String[] args) {
-        RideSharingSystem system = new RideSharingSystem();
-        system.loadRidersFromCSV("riders_100.csv");
-        system.loadDriversFromCSV("drivers_100.csv");
-        system.loadRidesFromCSV("rides_40.csv");
-        System.out.println(system.getAllRiders());
-    }
 }
 
