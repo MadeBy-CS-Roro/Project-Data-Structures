@@ -13,50 +13,66 @@ public class RiderList implements IRiderList {
 
   
     /**
-     * Inserts a rider in sorted order by ID.
+     * Inserts a rider in alphabetical order by name (riders with the same name go by ID).
+     * The list is not sorted by ID, so the whole list is traversed to make sure
+     * the ID is not already used.
      * Returns false if the rider is null or the ID already exists.
      * Big O(n)
      */
     @Override
     public boolean add(IRider rider) {
+
         if (rider == null) {// rider is null, cannot add
             return false;
         }
 
         Node<IRider> previous = null;
         Node<IRider> current = riders.getHead();
+        Node<IRider> insertionPoint = null; // new rider goes right after this node
+        boolean posipositionFound = false;
 
-        // move forward while the current ID is smaller than the new ID
-        while (current != null && rider.getId() > current.getData().getId()) {
+ 
+        while (current != null) {
+            if (current.getData().getId() == rider.getId()) { // duplicate ID
+                return false;
+            }
+
+            // the first rider that comes after the new one marks the insertion point
+            if (!positionFound && compareForOrder(current.getData(), rider) > 0) {
+                insertionPoint = previous; // null means insert at the head
+                positionFound = true;
+            }
             previous = current;
             current = current.getNext();
         }
-
-        // current now has an ID >= the new one; equal means duplicate
-        if (current != null && current.getData().getId() == rider.getId()) {
-            return false;
+ 
+        if (!positionFound) { // the new rider comes last
+            insertionPoint = previous;
         }
-        riders.insertAfter( previous, rider); // prev == null means insert at head
+        riders.insertAfter(insertionPoint, rider);
         return true;
     }
 
 
     /**
-     * Finds a rider by ID, stopping early since the list is sorted.
+     * Finds a rider by ID. The list is sorted by name, so the whole list may be traversed.
+     * Returns null if no rider has that ID.
      * Big O(n)
      */
     @Override
     public IRider findById(int riderId) {
+        
         Node<IRider> current = riders.getHead();
-
-        while (current != null && riderId >= current.getData().getId()) {
-            if (riderId == current.getData().getId()) {// Rider found
+ 
+        while (current != null) {
+            if (current.getData().getId() == riderId) { // rider found
                 return current.getData();
             }
             current = current.getNext();
         }
-        return null; // Rider not found
+        return null; // rider not found
     }
+ 
 
     //Returns every rider whose full name matches exactly. 
     //Big O(n)
@@ -138,22 +154,21 @@ public class RiderList implements IRiderList {
         Node<IRider> current = riders.getHead();
         Node<IRider> previous = null;
 
-        while (current != null && riderId >= current.getData().getId()) {
-            if (riderId == current.getData().getId()) {
-                if (previous == null) { // Removing head
+        while (current != null) {
+            if (current.getData().getId() == riderId) {
+                if (previous == null) { // removing the head
                     riders.removeFirst();
                 } else {
                     riders.removeAfter(previous);
                 }
-                return true; // Rider removed
-            }   
+                return true; // rider removed
+            }
             previous = current;
             current = current.getNext();
-
         }
-        return false; // Rider not found
+        return false; // rider not found
     }
-
+    
     //Removes the rider with the given email.
     //Big O(n)
     @Override
@@ -248,6 +263,38 @@ public class RiderList implements IRiderList {
     @Override
     public int size() {
         return riders.size();
+    }
+
+    
+    /**
+     * Compares two riders for the list order: alphabetically by name
+     * (ignoring upper/lower case), and by ID when the names are equal.
+     * Big O(1), treating the name length as a constant.
+     */
+    private int compareForOrder(IRider first, IRider second) {
+        int byName = compareNames(first.getName(), second.getName());
+        if (byName != 0) {
+            return byName;
+        }
+        return Integer.compare(first.getId(), second.getId());
+    }
+ 
+    /**
+     * Compares two names alphabetically, ignoring upper/lower case.
+     * A null name is placed before any other name.
+     * Big O(1), treating the name length as a constant.
+     */
+    private int compareNames(String first, String second) {
+        if (first == null && second == null) {
+            return 0;
+        }
+        if (first == null) {
+            return -1;
+        }
+        if (second == null) {
+            return 1;
+        }
+        return first.compareToIgnoreCase(second);
     }
 }
 //Done

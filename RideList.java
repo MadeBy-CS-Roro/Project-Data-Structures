@@ -25,6 +25,7 @@ public class RideList implements IRideList {
 
         Node<IRide> current = rides.getHead();
         Node<IRide> previous = null;
+
         
         while(current != null && current.getData().compareTo(ride) <= 0){//move through the list to find the correct position for the new ride
             previous = current;

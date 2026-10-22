@@ -13,33 +13,42 @@ public class DriverList implements IDriverList{
 
   
     /**
-     * Inserts a driver in sorted order by ID.
+     * Inserts a driver in alphabetical order by name (drivers with the same name go by ID).
+     * The list is not sorted by ID, so the whole list is traversed to make sure
+     * the ID is not already used.
      * Returns false if the driver is null or the ID already exists.
      * Big O(n)
      */
     @Override
     public boolean add(IDriver driver) {
-        if (driver == null) {// driver is null, cannot add
+        if (driver == null) { // a null driver cannot be added
             return false;
         }
-
+ 
         Node<IDriver> previous = null;
         Node<IDriver> current = drivers.getHead();
-
-        // move forward while the current ID is smaller than the new ID
-        while (current != null && driver.getId() > current.getData().getId()) {
+        Node<IDriver> insertionPoint = null; // the new driver goes right after this node
+        boolean positionFound = false;
+ 
+        while (current != null) {
+            if (current.getData().getId() == driver.getId()) { // duplicate ID
+                return false;
+            }
+            // the first driver that comes after the new one marks the insertion point
+            if (!positionFound && compareForOrder(current.getData(), driver) > 0) {
+                insertionPoint = previous; // null means insert at the head
+                positionFound = true;
+            }
             previous = current;
             current = current.getNext();
         }
-
-        // current now has an ID >= the new one; equal means duplicate
-        if (current != null && current.getData().getId() == driver.getId()) {
-            return false;
+ 
+        if (!positionFound) { // the new driver comes last
+            insertionPoint = previous;
         }
-        drivers.insertAfter(previous, driver); // previous == null means insert at head
+        drivers.insertAfter(insertionPoint, driver);
         return true;
     }
-
 
     /**
      * Finds a driver by ID, stopping early since the list is sorted.
@@ -156,18 +165,17 @@ public class DriverList implements IDriverList{
         Node<IDriver> current = drivers.getHead();
         Node<IDriver> previous = null;
 
-        while (current != null && driverId >= current.getData().getId()) {
-            if (driverId == current.getData().getId()) {
-                if (previous == null) { // Removing head
+        while (current != null) {
+            if (current.getData().getId() == driverId) {
+                if (previous == null) { // removing the head
                     drivers.removeFirst();
                 } else {
                     drivers.removeAfter(previous);
                 }
                 return true; // driver removed
-            }   
+            }
             previous = current;
             current = current.getNext();
-
         }
         return false; // driver not found
     }
@@ -279,5 +287,38 @@ public class DriverList implements IDriverList{
     public int size() {
         return drivers.size();
     }
+
+    
+    /**
+     * Compares two drivers for the list order: alphabetically by name
+     * (ignoring upper/lower case), and by ID when the names are equal.
+     * Big O(1), treating the name length as a constant.
+     */
+    private int compareForOrder(IDriver first, IDriver second) {
+        int byName = compareNames(first.getName(), second.getName());
+        if (byName != 0) {
+            return byName;
+        }
+        return Integer.compare(first.getId(), second.getId());
+    }
+ 
+    /**
+     * Compares two names alphabetically, ignoring upper/lower case.
+     * A null name is placed before any other name.
+     * Big O(1), treating the name length as a constant.
+     */
+    private int compareNames(String first, String second) {
+        if (first == null && second == null) {
+            return 0;
+        }
+        if (first == null) {
+            return -1;
+        }
+        if (second == null) {
+            return 1;
+        }
+        return first.compareToIgnoreCase(second);
+    }
+
 }
 //Done
