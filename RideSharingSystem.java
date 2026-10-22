@@ -49,10 +49,9 @@ public class RideSharingSystem implements IRideSharingSystem {
                 String[] fields = nextLine.split(",");
                 int driverId = Integer.parseInt(fields[0].trim());
                 String name = fields[1].trim();
-                String email = fields[2].trim();
-                String phoneNumber = fields[3].trim();
-                String vehiclePlate = fields[4].trim();
-                VehicleType vehicleType = VehicleType.valueOf(fields[5].trim().toUpperCase());
+                String phoneNumber = fields[2].trim();
+                String vehiclePlate = fields[3].trim();
+                VehicleType vehicleType = VehicleType.valueOf(fields[4].trim().toUpperCase());
                 Driver driver = new Driver(driverId, name, phoneNumber, vehiclePlate, vehicleType);
                 if (!driverList.add(driver)) {
                     System.out.println("Failed to add driver with ID: " + driverId);
@@ -62,6 +61,7 @@ public class RideSharingSystem implements IRideSharingSystem {
             br.close();
             return true;
         } catch (Exception e) {
+            System.out.println(e);
             return false;
         }
     }
@@ -408,6 +408,13 @@ public class RideSharingSystem implements IRideSharingSystem {
     //Returns all rides (private and shared) alphabetically ordered by pickup location
     public LinkedList<IRide> getAllRidesAlphabetically() {
         return rideList.getAllAlphabetically();
+    }
+
+    public static void main(String[] args){
+        RideSharingSystem system = new RideSharingSystem();
+        System.out.println("TEST");
+        system.loadDriversFromCSV("drivers_30.csv");
+        System.out.println(system.getAllDrivers());
     }
 
 }

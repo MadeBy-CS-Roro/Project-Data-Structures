@@ -38,5 +38,5 @@ public class Driver extends Person implements IDriver{
         return getId()-other.getId();}
 
     public String toString(){
-        return "Driver{id = "+getId()+" name + "+getName()+" plate = "+vehiclePlate+" type = "+ vehicleType;}
+        return "Driver{id = "+getId()+", name = "+getName()+", plate = "+vehiclePlate+", type = "+ vehicleType;}
 }
