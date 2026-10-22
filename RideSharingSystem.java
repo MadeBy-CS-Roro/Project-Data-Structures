@@ -198,7 +198,10 @@ public class RideSharingSystem implements IRideSharingSystem {
             return true;
         }
          catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
             return false;
+            
         }
     }
 
@@ -415,6 +418,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         System.out.println("TEST");
         system.loadDriversFromCSV("drivers_30.csv");
         System.out.println(system.getAllDrivers());
+        system.loadDriversFromCSV("rides_40.csv");
     }
 
 }

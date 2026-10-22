@@ -29,7 +29,7 @@ public class RiderList implements IRiderList {
         Node<IRider> previous = null;
         Node<IRider> current = riders.getHead();
         Node<IRider> insertionPoint = null; // new rider goes right after this node
-        boolean posipositionFound = false;
+        boolean positionFound = false;
 
  
         while (current != null) {
