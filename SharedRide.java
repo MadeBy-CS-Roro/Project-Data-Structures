@@ -38,13 +38,12 @@ public class SharedRide extends Ride<SharedRide> implements ISharedRide {
 	// Returns a formatted string describing the ride.
 	public String toString(){
         return "SharedRide{" +
-                "rideID= " + rideID +
-                ", pickupLocation= '" + pickupLocation + '\'' +
-                ", pickupTime= " + pickupTime.format() +
-                ", dropoffLocation= '" + dropoffLocation + '\'' +
-                ", dropoffTime= " + dropoffTime.format() +
-                ", driver= " + driver +
-                ", riders= " + Riders.getAll() +
-                '}';
+                "\n\trideID= " + rideID +
+                "\n\tpickupLocation= '" + pickupLocation + '\'' +
+                "\n\tpickupTime= " + pickupTime.format() +
+                "\n\tdropoffLocation= '" + dropoffLocation + '\'' +
+                "\n\tdropoffTime= " + dropoffTime.format() +
+                "\n\tdriver= " + driver +
+                "\n\triders=\n" + Riders.getAll() + '}';
     }
 }

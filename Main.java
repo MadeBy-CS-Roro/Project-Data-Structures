@@ -4,7 +4,7 @@ public class Main{
         RideSharingSystem rideSharingSystem = new RideSharingSystem();
         rideSharingSystem.loadRidersFromCSV("riders_100.csv"); // Load Riders CSV
         rideSharingSystem.loadDriversFromCSV("drivers_30.csv"); // Load Drivers CSV
-        rideSharingSystem.loadRidesFromCSV("riders_40.csv"); // Load Rides CSV
+        rideSharingSystem.loadRidesFromCSV("rides_40.csv"); // Load Rides CSV
         Scanner scanner = new Scanner(System.in);
         LinkedList result; // To store LinkedKList result
         int User_input = -1; // Initialize User_input to a value that is not 0 since it will be used to control the loop
@@ -38,33 +38,33 @@ public class Main{
 
             result = new LinkedList<>(); // Refresh the LinkedList result
             switch(User_input){
-                case 1:
-                    result = rideSharingSystem.getAllRiders();
+                case 1: // List all riders
+                    result = rideSharingSystem.getAllRiders(); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
-                        System.out.println(result); //NOTE NEEDS TO BE ALPHABETICAL
+                        System.out.println(result);
                     break;
-                case 2:
+                case 2: // Search for riders by home city
                     System.out.println("Enter the home city to search for riders:");
                     String homeCity = scanner.nextLine();
-                    result = rideSharingSystem.searchRidersByHomeCity(homeCity);
+                    result = rideSharingSystem.searchRidersByHomeCity(homeCity); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
                         System.out.println(result);
                     break;
-                case 3:
+                case 3: // Search for riders by name
                     System.out.println("Enter the name to search for riders:");
                     String riderName = scanner.nextLine();
-                    result = rideSharingSystem.searchRidersByName(riderName);
+                    result = rideSharingSystem.searchRidersByName(riderName); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
                         System.out.println(result);
                     break;
-                case 4:
-                    try{
+                case 4: // Add a rider
+                    try{ // Incase the user's input throws an exception
                         System.out.println("Enter the rider's ID:");
                         int riderId = scanner.nextInt();
                         scanner.nextLine(); // garbage collection
@@ -84,39 +84,39 @@ public class Main{
                         }
                     }
                     catch(InputMismatchException e){
-                        System.out.println("Wrong input! Try again.");
+                        System.out.println("Wrong input! Try again."); // Message incase the user's made an exception with their input
                         continue;
                     }
                     catch(Exception e){
-                        System.out.println("Something went wrong.. Try again later..");
+                        System.out.println("Something went wrong.. Try again later.."); // Message incase any exception
                         continue;
                     }
                     break;
-                case 5:
-                    result = rideSharingSystem.getAllDrivers();
-                    if(result.size() == 0)
-                        System.out.println("No result");
-                    else
-                        System.out.println(result); //NOTE NEEDS TO BE ALPHABETICAL
-                    break;
-                case 6:
-                    System.out.println("Enter the vehicle type to search for drivers:");
-                    String vehicleType = scanner.nextLine();
-                    VehicleType vehicleTypeEnum;
-                    try {
-                        vehicleTypeEnum = VehicleType.valueOf(vehicleType.toUpperCase());
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Invalid vehicle type. Please enter CAR, VAN, or TRUCK.");
-                        break;
-                    }
-                    result = rideSharingSystem.searchDriversByVehicleType(vehicleTypeEnum);
+                case 5: // List all drivers
+                    result = rideSharingSystem.getAllDrivers(); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
                         System.out.println(result);
                     break;
-                case 7:
-                    try{
+                case 6: // Search for drivers by vehicle type
+                    System.out.println("Enter the vehicle type to search for drivers:");
+                    String vehicleType = scanner.nextLine();
+                    VehicleType vehicleTypeEnum;
+                    try { // Incase the user's vehicleType is wrong/ not in our system
+                        vehicleTypeEnum = VehicleType.valueOf(vehicleType.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid vehicle type. Please enter CAR, VAN, or TRUCK.");
+                        break;
+                    }
+                    result = rideSharingSystem.searchDriversByVehicleType(vehicleTypeEnum); // Saving the result to check if it gives result or not
+                    if(result.size() == 0)
+                        System.out.println("No result");
+                    else
+                        System.out.println(result);
+                    break;
+                case 7: // Add a driver
+                    try{ // Incase the user's input throws an exception
                         System.out.println("Enter the driver's ID:");
                         int driverId = scanner.nextInt();
                         scanner.nextLine(); // garbage collection
@@ -129,7 +129,7 @@ public class Main{
                         System.out.println("Enter the driver's vehicle type (CAR, VAN, TRUCK):");
                         String driverVehicleTypeInput = scanner.nextLine();
                         VehicleType driverVehicleType;
-                        try {
+                        try { // Incase the user's vehicleType is wrong/ not in our system
                             driverVehicleType = VehicleType.valueOf(driverVehicleTypeInput.toUpperCase());
                         } catch (IllegalArgumentException e) {
                             System.out.println("Invalid vehicle type. Please enter CAR, VAN, or TRUCK.");
@@ -143,59 +143,60 @@ public class Main{
                         }
                         }
                     catch(InputMismatchException e){
-                        System.out.println("Wrong input! Try again.");
+                        System.out.println("Wrong input! Try again."); // Message incase the user's made an exception with their input
                         continue;
                     }
                     catch(Exception e){
-                        System.out.println("Something went wrong.. Try again later..");
+                        System.out.println("Something went wrong.. Try again later.."); // Message incase any exception
                         continue;
                     }
                     break;
-                case 8:
-                    result = rideSharingSystem.getAllRidesAlphabetically();
+                case 8: // List all rides alphabetically by pickup location
+                    result = rideSharingSystem.getAllRidesAlphabetically(); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
-                        System.out.println(result);//NOTE NEEDS TO BE ALPHABETICAL
+                        System.out.println(result);
                     break;
-                case 9:
+                case 9: // Search for rides by pickup location
                     System.out.println("Enter the pickup location to search for rides:");
                     String pickupLocation = scanner.nextLine();
-                    result = rideSharingSystem.searchRidesByPickupLocation(pickupLocation);
+                    result = rideSharingSystem.searchRidesByPickupLocation(pickupLocation); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
                         System.out.println(result);
                     break;
-                case 10:
+                case 10: // Search for rides by rider name
                     System.out.println("Enter the rider's name to search for rides:");
                     String rideRiderName = scanner.nextLine();
-                    result = rideSharingSystem.searchRidesByRiderName(rideRiderName);
+                    result = rideSharingSystem.searchRidesByRiderName(rideRiderName); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
                         System.out.println(result);
                     break;
-                case 11:
+                case 11: // List the participants of a shared ride by pick up location
                     System.out.println("Enter the pickup location to list participants of a shared ride:");
                     String sharedRidePickupLocation = scanner.nextLine();
-                    result = rideSharingSystem.getSharedRideParticipants(sharedRidePickupLocation);
+                    result = rideSharingSystem.getSharedRideParticipants(sharedRidePickupLocation); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
                     else
                         System.out.println(result);
                     break;
-                case 12:
+                case 12: // Add a ride
                     System.out.println("What type of ride would you like to schedule? (private/shared)");
-                    try{
+                    try{ // Incase user's input throws an exception
                         String rideType = scanner.nextLine().toLowerCase();
                         System.out.println("Enter the pickup location:");
                         String newPickupLocation = scanner.nextLine();
                         System.out.println("Enter the pickup time (YYYY-MM-DD HH:MM):");
                         String newPickupTime = scanner.nextLine();
+                        // Splitting the DateTime to ararnge as the class constructor
                         String[] pickUpDateTimeParts = new String[5];
-                        int startPoint = 0;
-                        for (int i = 0; i < 5; i++) {
+                        int startPoint = 0; // Reset the startPoint for the date and time
+                        for (int i = 0; i < 5; i++) { // Loop through the 5 components of the date and time (day, month, year, hour, minute)
                             if(i < 2){
                                 pickUpDateTimeParts[i] = newPickupTime.substring(startPoint, newPickupTime.indexOf("/", startPoint));
                                 startPoint += 3; // Move past the current part and the delimiter
@@ -235,7 +236,7 @@ public class Main{
                         IDateTime dropoffDateTime = new DateTime(Integer.parseInt(dropOffDateTimeParts[2]), Integer.parseInt(dropOffDateTimeParts[1]), Integer.parseInt(dropOffDateTimeParts[0]), Integer.parseInt(dropOffDateTimeParts[3]), Integer.parseInt(dropOffDateTimeParts[4]));
                         System.out.println("Enter the dropoff location:");
                         String newDropoffLocation = scanner.nextLine();
-                        if(rideType.equals("private")){
+                        if(rideType.equals("private")){ // Enter the rider for privateRide
                             System.out.println("Enter the rider's ID:");
                             int newPrivateRiderId = scanner.nextInt();
                             scanner.nextLine(); // garbage collection
@@ -245,11 +246,11 @@ public class Main{
                                 System.out.println("Private ride scheduled successfully!");
                             } else {
                                 System.out.println("Failed to schedule private ride.");}
-                        } else if(rideType.equals("shared")){
+                        } else if(rideType.equals("shared")){ // Enter the rider(s) for sharedRide
                             System.out.println("Enter the number of riders:");
                             int numRiders = scanner.nextInt();
                             int[] newSharedRiderIds = new int[numRiders];
-                            for(int i = 0; i < numRiders; i++){
+                            for(int i = 0; i < numRiders; i++){ 
                                 System.out.println("Enter the ID of rider " + (i + 1) + ":");
                                 newSharedRiderIds[i] = scanner.nextInt();
                             }
@@ -269,10 +270,10 @@ public class Main{
                         scanner.nextLine(); // garbage collection
                     }
                     break;
-                case 0:
+                case 0: // End program
                     System.out.println("Exiting the program. Goodbye!");
                     break;
-                default:
+                default: // If user put wrong integer
                     System.out.println("Invalid option. Please try again.");
 
             

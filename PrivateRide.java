@@ -17,14 +17,18 @@ public class PrivateRide extends Ride<PrivateRide> implements IPrivateRide {
     }
     // return a formatted string describing the private ride, including the rider
     public String toString() {
-        return "PrivateRide{rideID = " + rideID + ", pickupLocation = '" + pickupLocation + '\'' + ", pickupTime = " + pickupTime.format() + ", dropoffLocation = '" + dropoffLocation + '\'' +
-                ", dropoffTime = " + dropoffTime.format() +
-                ", driver = " + driver +
-                ", rider = " + rider +
-                '}';
+        return "PrivateRide{\n\trideID = " + rideID +     
+        "\n\tpickupLocation = '" + pickupLocation + '\'' +    
+        "\n\tpickupTime = " + pickupTime.format() + 
+        "\n\tdropoffLocation = '" + dropoffLocation + '\'' +
+        "\n\tdropoffTime = " + dropoffTime.format() +
+        "\n\tdriver = " + driver +
+        "\n\trider = " + rider + '}';
     }
     // check whether a rider participates in this private ride
     public boolean hasRider(int riderId) {
         return rider.getId() == riderId;
     }
+
+    
 }

@@ -61,7 +61,7 @@ public class RideSharingSystem implements IRideSharingSystem {
             br.close();
             return true;
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             return false;
         }
     }
@@ -198,8 +198,8 @@ public class RideSharingSystem implements IRideSharingSystem {
             return true;
         }
          catch (Exception e) {
-            System.out.println(e);
             e.printStackTrace();
+            System.out.println(e);
             return false;
             
         }
@@ -244,12 +244,12 @@ public class RideSharingSystem implements IRideSharingSystem {
         return riderList.findByHomeCity(homeCity);
     }
 
-    //NOTE MAKE IT ALPHABETICAL
+    // Get all riders sorted alphabetically by rider name.
     public LinkedList<IRider> getAllRiders() {
         return riderList.getAll();
     }
 
-    // Searches for a driver by ID
+    // Searches for a driver by ID.
     public IDriver searchDriverById(int driverId) {
         return driverList.findById(driverId);
     }
@@ -264,12 +264,12 @@ public class RideSharingSystem implements IRideSharingSystem {
         return driverList.findByVehicleType(vehicleType);
     }
 
-    //NOTE MAKE IT ALPHABETICAL + ALWATS RETURN EMPTY LIST
+    // Get all drivers sorted alphabetically by driver name.
     public LinkedList<IDriver> getAllDrivers() {
         return driverList.getAll();
     }
 
-    // Removes a rider and performs cascade deletion of associated rides
+    // Removes a rider and performs cascade deletion of associated rides.
     public boolean removeRider(int riderId) {
         IRider riderToRemove = riderList.findById(riderId);
         if (riderToRemove == null) {
@@ -412,14 +412,5 @@ public class RideSharingSystem implements IRideSharingSystem {
     public LinkedList<IRide> getAllRidesAlphabetically() {
         return rideList.getAllAlphabetically();
     }
-
-    public static void main(String[] args){
-        RideSharingSystem system = new RideSharingSystem();
-        System.out.println("TEST");
-        system.loadDriversFromCSV("drivers_30.csv");
-        System.out.println(system.getAllDrivers());
-        system.loadDriversFromCSV("rides_40.csv");
-    }
-
 }
 
