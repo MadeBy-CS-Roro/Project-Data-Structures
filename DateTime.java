@@ -38,6 +38,9 @@ public class DateTime implements IDateTime{
         if (month!=other.getMonth())
             return month-other.getMonth();
 
+        if(day!=other.getDay())
+          return day-other.getDay();
+
         if (hour!=other.getHour())
             return hour-other.getHour();
 
