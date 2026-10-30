@@ -192,7 +192,7 @@ public class Main{
                         String rideType = scanner.nextLine().toLowerCase();
                         System.out.println("Enter the pickup location:");
                         String newPickupLocation = scanner.nextLine();
-                        System.out.println("Enter the pickup time (YYYY-MM-DD HH:MM):");
+                        System.out.println("Enter the pickup time (DD/MM/YYYY HH:MM):");
                         String newPickupTime = scanner.nextLine();
                         // Splitting the DateTime to ararnge as the class constructor
                         String[] pickUpDateTimeParts = new String[5];
@@ -214,7 +214,7 @@ public class Main{
                                 pickUpDateTimeParts[i] = newPickupTime.substring(startPoint);
                         }
                         IDateTime pickupDateTime = new DateTime(Integer.parseInt(pickUpDateTimeParts[2]), Integer.parseInt(pickUpDateTimeParts[1]), Integer.parseInt(pickUpDateTimeParts[0]), Integer.parseInt(pickUpDateTimeParts[3]), Integer.parseInt(pickUpDateTimeParts[4]));
-                        System.out.println("Enter the dropoff time (YYYY-MM-DD HH:MM):");
+                        System.out.println("Enter the dropoff time (DD/MM/YYYY HH:MM):");
                         String newDropoffTime = scanner.nextLine();
                         String[] dropOffDateTimeParts = new String[5];
                         startPoint = 0;
