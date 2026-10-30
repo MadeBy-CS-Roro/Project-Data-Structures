@@ -1,4 +1,4 @@
-public abstract class Ride<T> implements IRide{
+public abstract class Ride implements IRide{
     protected int rideID;
     protected String pickupLocation;
     protected IDateTime pickupTime;

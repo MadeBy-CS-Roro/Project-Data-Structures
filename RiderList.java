@@ -38,7 +38,7 @@ public class RiderList implements IRiderList {
             }
 
             // the first rider that comes after the new one marks the insertion point
-            if (!positionFound && compareForOrder(current.getData(), rider) > 0) {
+            if (!positionFound && current.getData().compareTo(rider) > 0) {
                 insertionPoint = previous; // null means insert at the head
                 positionFound = true;
             }

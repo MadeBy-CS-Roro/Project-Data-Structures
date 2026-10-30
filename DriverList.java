@@ -35,7 +35,7 @@ public class DriverList implements IDriverList{
                 return false;
             }
             // the first driver that comes after the new one marks the insertion point
-            if (!positionFound && compareForOrder(current.getData(), driver) > 0) {
+            if (!positionFound && current.getData().compareTo(driver) > 0) {
                 insertionPoint = previous; // null means insert at the head
                 positionFound = true;
             }

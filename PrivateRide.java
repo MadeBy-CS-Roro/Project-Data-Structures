@@ -1,4 +1,4 @@
-public class PrivateRide extends Ride<PrivateRide> implements IPrivateRide {
+public class PrivateRide extends Ride implements IPrivateRide {
     private IRider rider;
 
     // constructor to initialize the private ride with pickup and drop-off Date/Time values, driver, and rider

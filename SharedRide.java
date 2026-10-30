@@ -1,4 +1,4 @@
-public class SharedRide extends Ride<SharedRide> implements ISharedRide {
+public class SharedRide extends Ride implements ISharedRide {
     private RiderList Riders;
 
     // constructor to initialize the shared ride with pickup and drop-off Date/Time values, driver, and list of riders
