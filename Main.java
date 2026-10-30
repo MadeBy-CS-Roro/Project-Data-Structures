@@ -49,6 +49,10 @@ public class Main{
                 case 2: // Search for riders by home city
                     System.out.println("Enter the home city to search for riders:");
                     String homeCity = scanner.nextLine();
+                    if (homeCity.equals(" ") || homeCity.equals("")){
+                        System.out.println("You have to enter a string");
+                        break;
+                        }
                     result = rideSharingSystem.searchRidersByHomeCity(homeCity); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
@@ -58,6 +62,10 @@ public class Main{
                 case 3: // Search for riders by name
                     System.out.println("Enter the name to search for riders:");
                     String riderName = scanner.nextLine();
+                    if (riderName.equals(" ") || riderName.equals("")){
+                        System.out.println("You have to enter a full name");
+                        break;
+                        }
                     result = rideSharingSystem.searchRidersByName(riderName); // Saving the result to check if it gives result or not
                     if(result.size() == 0)
                         System.out.println("No result");
@@ -89,7 +97,7 @@ public class Main{
                         continue;
                     }
                     catch(Exception e){
-                        System.out.println("Something went wrong.. Try again later.."); // Message incase any exception
+                        System.out.println("Something went wrong.. " + e.getMessage() + ". Try again later.."); // Message incase any exception
                         continue;
                     }
                     break;
@@ -107,7 +115,7 @@ public class Main{
                     try { // Incase the user's vehicleType is wrong/ not in our system
                         vehicleTypeEnum = VehicleType.valueOf(vehicleType.toUpperCase());
                     } catch (IllegalArgumentException e) {
-                        System.out.println("Invalid vehicle type. Please enter CAR, VAN, or TRUCK.");
+                        System.out.println("Invalid vehicle type. Please enter SEDAN, VAN, LUXURY_SEDAN, or SUV.");
                         break;
                     }
                     result = rideSharingSystem.searchDriversByVehicleType(vehicleTypeEnum); // Saving the result to check if it gives result or not
@@ -127,7 +135,7 @@ public class Main{
                         String driverPhoneNumber = scanner.nextLine();
                         System.out.println("Enter the driver's vehicle plate:");
                         String driverVehiclePlate = scanner.nextLine();
-                        System.out.println("Enter the driver's vehicle type (CAR, VAN, TRUCK):");
+                        System.out.println("Enter the driver's vehicle type (SEDAN, VAN, LUXURY_SEDAN, SUV):");
                         String driverVehicleTypeInput = scanner.nextLine();
                         VehicleType driverVehicleType;
                         try { // Incase the user's vehicleType is wrong/ not in our system
@@ -148,7 +156,7 @@ public class Main{
                         continue;
                     }
                     catch(Exception e){
-                        System.out.println("Something went wrong.. Try again later.."); // Message incase any exception
+                        System.out.println("Something went wrong.." + e.getMessage() + ". Try again later.."); // Message incase any exception
                         continue;
                     }
                     break;
@@ -268,7 +276,6 @@ public class Main{
                     }}
                     catch(Exception e){
                         System.out.println("Invalid input. Please try again.");
-                        scanner.nextLine(); // garbage collection
                     }
                     break;
                 case 0: // End program

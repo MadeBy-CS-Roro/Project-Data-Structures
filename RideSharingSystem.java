@@ -193,6 +193,7 @@ public class RideSharingSystem implements IRideSharingSystem {
                     System.out.println("Failed to add ride with ID: " + ride.getRideId());
                     return false;
                 }
+                rideID++; // Increment the ride ID for the next ride
             }}
             br.close();
             return true;
@@ -341,7 +342,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         }
 
         // Create and add the private ride
-        PrivateRide newRide = new PrivateRide(pickupLocation, pickupTime, dropoffLocation, dropoffTime, driver, rideList.size(), rider);
+        PrivateRide newRide = new PrivateRide(pickupLocation, pickupTime, dropoffLocation, dropoffTime, driver, rideList.size() + 1, rider);
         return rideList.addRide(newRide);
     }
 
@@ -380,7 +381,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         }
 
         // Create and add the shared ride
-        SharedRide newRide = new SharedRide(pickupLocation, pickupTime, dropoffLocation, dropoffTime, driver, riders, rideList.size());
+        SharedRide newRide = new SharedRide(pickupLocation, pickupTime, dropoffLocation, dropoffTime, driver, riders, rideList.size() + 1);
         return rideList.addRide(newRide);
     }
 
