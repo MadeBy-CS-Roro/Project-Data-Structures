@@ -221,6 +221,8 @@ public class RideSharingSystem implements IRideSharingSystem {
         else if(driverList.findByVehiclePlate(driver.getVehiclePlate()) != null) {
             return false; // Driver with this vehicle plate already exists
         }
+        else if(driver == null)
+            return false;
         return driverList.add(driver);
     }
 
@@ -332,7 +334,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         for (Node<IRide> current = allRides.getHead(); current != null; current = current.getNext()) {
             IRide ride = current.getData();
             if (ride.getDriver().getId() == driverId || (ride instanceof PrivateRide && ((PrivateRide) ride).getRider().getId() == riderId) || (ride instanceof SharedRide && ((SharedRide) ride).hasRider(riderId))) {
-                if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) { // Check if there is conflict in the DateTime
+                if (pickupTime.compareTo(ride.getDropoffTime()) < 0 && ride.getPickupTime().compareTo(dropoffTime) < 0) { // Check if there is conflict in the DateTime
                     return false; // Scheduling conflict found
                 }
             }
@@ -364,7 +366,7 @@ public class RideSharingSystem implements IRideSharingSystem {
         for (Node<IRide> current = allRides.getHead(); current != null; current = current.getNext()) {
             IRide ride = current.getData();
             if (ride.getDriver().getId() == driverId) {
-                if (ride.getPickupTime().compareTo(pickupTime) < 0 && ride.getDropoffTime().compareTo(dropoffTime) > 0) {
+                if (pickupTime.compareTo(ride.getDropoffTime()) < 0 && ride.getPickupTime().compareTo(dropoffTime) < 0) {
                     return false; // Scheduling conflict found on the driver
                 }
             }
