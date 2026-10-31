@@ -3,9 +3,18 @@ import java.util.InputMismatchException;
 public class Main{
     public static void main(String[] args) {
         RideSharingSystem rideSharingSystem = new RideSharingSystem();
-        rideSharingSystem.loadRidersFromCSV("riders_100.csv"); // Load Riders CSV
-        rideSharingSystem.loadDriversFromCSV("drivers_30.csv"); // Load Drivers CSV
-        rideSharingSystem.loadRidesFromCSV("rides_40.csv"); // Load Rides CSV
+        if(rideSharingSystem.loadRidersFromCSV("riders_100.csv")) // Load Riders CSV
+            System.out.println("Riders file loading successful");
+        else
+            System.out.println("Riders file loading failed");
+        if(rideSharingSystem.loadDriversFromCSV("drivers_30.csv")) // Load Drivers CSV
+            System.out.println("Drivers file loading successful");
+        else
+            System.out.println("Drivers file loading failed");
+        if(rideSharingSystem.loadRidesFromCSV("rides_40.csv")) // Load Rides CSV
+            System.out.println("Rides file loading successful");
+        else
+            System.out.println("Rides file loading failed");
         Scanner scanner = new Scanner(System.in);
         LinkedList result; // To store LinkedKList result
         int User_input = -1; // Initialize User_input to a value that is not 0 since it will be used to control the loop
