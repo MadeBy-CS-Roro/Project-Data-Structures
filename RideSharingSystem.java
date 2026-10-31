@@ -198,8 +198,6 @@ public class RideSharingSystem implements IRideSharingSystem {
             return true;
         }
          catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e);
             return false;
             
         }
