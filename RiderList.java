@@ -266,35 +266,5 @@ public class RiderList implements IRiderList {
     }
 
     
-    /**
-     * Compares two riders for the list order: alphabetically by name
-     * (ignoring upper/lower case), and by ID when the names are equal.
-     * Big O(1), treating the name length as a constant.
-     */
-    private int compareForOrder(IRider first, IRider second) {
-        int byName = compareNames(first.getName(), second.getName());
-        if (byName != 0) {
-            return byName;
-        }
-        return Integer.compare(first.getId(), second.getId());
-    }
- 
-    /**
-     * Compares two names alphabetically, ignoring upper/lower case.
-     * A null name is placed before any other name.
-     * Big O(1), treating the name length as a constant.
-     */
-    private int compareNames(String first, String second) {
-        if (first == null && second == null) {
-            return 0;
-        }
-        if (first == null) {
-            return -1;
-        }
-        if (second == null) {
-            return 1;
-        }
-        return first.compareToIgnoreCase(second);
-    }
 }
 //Done
